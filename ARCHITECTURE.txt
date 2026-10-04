@@ -1,0 +1,18 @@
+GREEN ARMOR CYBER RANGE
+Pivoting, Tunneling & Port Forwarding
+
+172.16.10.0/24 (Corporate)
+
+[ga-attacker]
+172.16.10.10
+      |
+      | SSH tunnel
+      v
+[ga-pivot]
+172.16.10.20
+10.10.20.20
+      |
+      +---------------- 10.10.20.0/24 (Internal)
+                         |
+                         +-- [ga-internal-web] 10.10.20.30:80
+                         +-- [ga-internal-ssh] 10.10.20.40:22

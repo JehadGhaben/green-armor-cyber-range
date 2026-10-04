@@ -1,0 +1,4 @@
+PS1='\[\e[1;32m\]GREEN-ARMOR\[\e[0m\]:\[\e[1;37m\]\w\[\e[0m\]# '
+alias mission='cat /root/MISSION.txt'
+alias myip='ip -br -4 addr'
+alias routes='ip route'

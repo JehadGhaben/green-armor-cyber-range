@@ -1,0 +1,18 @@
+GREEN ARMOR CYBER RANGE - MISSION
+
+You are positioned on the Corporate network.
+An Internal network exists but is not directly attached to your system.
+
+Objectives:
+1. Document your local network and routes.
+2. Identify the reachable host that can act as a pivot.
+3. Establish an SSH tunnel through the pivot.
+4. Reach the internal web service.
+5. Reach a second internal service.
+6. Document evidence and the final network path.
+
+Training credentials for the pivot host:
+  user: pivot
+  password: PivotLab2026!
+
+Do not test systems outside this lab.
