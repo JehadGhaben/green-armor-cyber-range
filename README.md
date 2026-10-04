@@ -60,8 +60,8 @@ The attacker is connected only to the corporate network. The pivot is dual-homed
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/green-armor-cyber-range.git
-cd green-armor-cyber-range
+git clone https://github.com && cd green-armor-cyber-range && chmod +x *.sh tests/*.sh && ./start.sh
+
 ```
 
 Make the scripts executable and start the lab:
