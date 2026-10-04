@@ -1,152 +1,325 @@
 <p align="center">
-  <img src="assets/logo.png" width="220" alt="GREEN ARMOR CYBER SECURITY">
+  <img src="assets/logo.png" alt="GREEN ARMOR CYBER SECURITY" width="220">
 </p>
 
-<h1 align="center">GREEN ARMOR CYBER RANGE</h1>
-<p align="center"><strong>Pivoting, Tunneling & Port Forwarding Lab</strong></p>
-<p align="center">A self-contained Docker lab for practical network pivoting training.</p>
+# GREEN ARMOR CYBER RANGE
 
-<p align="center">
-  <a href="README_AR.md">العربية</a> ·
-  <a href="docs/STUDENT-GUIDE.md">Student Guide</a> ·
-  <a href="docs/TROUBLESHOOTING.md">Troubleshooting</a>
-</p>
+## Pivoting, Tunneling & Port Forwarding Lab
+
+A self-contained Docker-based cybersecurity lab designed for practical training in network pivoting, tunneling, SSH port forwarding, SOCKS proxies, and internal network access.
+
+[العربية](README_AR.md) · [Student Guide](docs/STUDENT-GUIDE.md) · [Troubleshooting](docs/TROUBLESHOOTING.md)
+
+---
 
 ## Overview
 
-GREEN ARMOR CYBER RANGE is an isolated training environment designed to practice:
+**GREEN ARMOR CYBER RANGE** is an isolated training environment designed to practice:
 
-- network discovery and route awareness
-- pivot-host identification
+- Network discovery and route awareness
+- Pivot host identification
 - SSH Local Port Forwarding
-- SSH Dynamic Port Forwarding / SOCKS
+- SSH Dynamic Port Forwarding
+- SOCKS proxy tunneling
 - Proxychains-based access through a SOCKS tunnel
-- validation of access to isolated internal services
-- technical documentation of the final access path
+- Access validation to isolated internal services
+- Technical documentation of the final access path
 
 **Created & Developed by Jehad Ghaben**  
 **Founder & CEO — GREEN ARMOR CYBER SECURITY**
 
-## Lab topology
+---
+
+## Lab Topology
 
 ```mermaid
 flowchart LR
-    A[ga-attacker\n172.16.10.10] -->|SSH| P[ga-pivot\n172.16.10.20\n10.10.20.20]
-    P --> W[ga-internal-web\n10.10.20.30:80]
-    P --> S[ga-internal-ssh\n10.10.20.40:22]
+    A["ga-attacker<br>172.16.10.10"]
+    P["ga-pivot<br>172.16.10.20<br>10.10.20.20"]
+    W["ga-internal-web<br>10.10.20.30:80"]
+    S["ga-internal-ssh<br>10.10.20.40:22"]
 
-    subgraph CORP[Corporate Network 172.16.10.0/24]
-        A
-        P
-    end
-
-    subgraph INTERNAL[Internal Network 10.10.20.0/24]
-        W
-        S
-    end
+    A --> P
+    P --> W
+    P --> S
 ```
 
-The attacker is connected only to the corporate network. The pivot is dual-homed and is the only lab system connected to both networks. Internal services are not published to the host.
+The attacker is connected only to the corporate network.
+
+The pivot host is **dual-homed** and is the only lab system connected to both networks.
+
+The internal services are located on an isolated internal network and are not directly published to the host.
+
+### Corporate Network
+
+```text
+172.16.10.0/24
+```
+
+### Internal Network
+
+```text
+10.10.20.0/24
+```
+
+---
 
 ## Requirements
+
+Before starting the lab, make sure you have:
 
 - Docker Engine or Docker Desktop
 - Docker Compose v2
 - Linux, macOS, or Windows with WSL2/Docker Desktop
-- Recommended minimum: 2 GB free RAM and 2 GB free disk space
+- At least 2 GB of free RAM
+- At least 2 GB of free disk space
 
-## Quick start
-
-Clone the repository:
+Check Docker:
 
 ```bash
-git clone https://github.com && cd green-armor-cyber-range && chmod +x *.sh tests/*.sh && ./start.sh
-
+docker --version
+docker compose version
 ```
 
-Make the scripts executable and start the lab:
+---
+
+# Quick Start
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/JehadGhaben/green-armor-cyber-range.git
+```
+
+Enter the project directory:
+
+```bash
+cd green-armor-cyber-range
+```
+
+---
+
+## 2. Make the Scripts Executable
 
 ```bash
 chmod +x *.sh tests/*.sh
+```
+
+---
+
+## 3. Start the Lab
+
+```bash
 ./start.sh
 ```
 
-Open the attacker shell:
+Docker will build and start the GREEN ARMOR Cyber Range environment.
+
+---
+
+## 4. Check Lab Status
+
+```bash
+./status.sh
+```
+
+You should see the lab containers running.
+
+---
+
+## 5. Open the Attacker Environment
 
 ```bash
 ./shell.sh
 ```
 
-Then inside the attacker container:
+Inside the attacker container, start by running:
 
 ```bash
 mission
+```
+
+Then inspect the attacker network configuration:
+
+```bash
 myip
+```
+
+```bash
 routes
 ```
 
-## Training credentials
+The student should begin the lab from this environment.
 
-Pivot host:
+---
+
+# Training Credentials
+
+## Pivot Host
 
 ```text
 Username: pivot
 Password: PivotLab2026!
 ```
 
-Internal SSH service:
+## Internal SSH Service
 
 ```text
 Username: internal
 Password: InternalLab2026!
 ```
 
-These credentials are intentionally included for the training scenario.
+These credentials are intentionally included as part of the controlled training scenario.
 
-## Intended learning flow
+---
+
+# Intended Learning Flow
 
 ```text
 Discovery
-  ↓
-Pivot Identification
-  ↓
+   ↓
+Pivot Host Identification
+   ↓
+Internal Network Discovery
+   ↓
 Tunnel Creation
-  ↓
+   ↓
 Internal Access
-  ↓
+   ↓
 Validation
-  ↓
+   ↓
 Documentation
 ```
 
-Students should follow [`docs/STUDENT-GUIDE.md`](docs/STUDENT-GUIDE.md).
+Students should follow:
 
-## Instructor validation
+[`docs/STUDENT-GUIDE.md`](docs/STUDENT-GUIDE.md)
 
-After the lab starts, run:
+---
+
+# Lab Scenario
+
+The attacker begins with access only to:
+
+```text
+172.16.10.0/24
+```
+
+The attacker must identify the pivot host:
+
+```text
+172.16.10.20
+```
+
+The pivot host is connected to two networks:
+
+```text
+172.16.10.20
+10.10.20.20
+```
+
+Behind the pivot exists an isolated internal network:
+
+```text
+10.10.20.0/24
+```
+
+Internal services include:
+
+```text
+10.10.20.30:80
+10.10.20.40:22
+```
+
+The objective is to understand and document the path:
+
+```text
+Attacker
+   ↓
+Pivot Host
+   ↓
+Tunnel
+   ↓
+Internal Network
+   ↓
+Internal Service
+```
+
+---
+
+# Example Training Techniques
+
+The lab supports training with techniques such as:
+
+### SSH Local Port Forwarding
+
+```bash
+ssh -L 8080:10.10.20.30:80 pivot@172.16.10.20
+```
+
+The internal web service can then be accessed through:
+
+```text
+http://127.0.0.1:8080
+```
+
+---
+
+### SSH Dynamic Port Forwarding
+
+```bash
+ssh -D 1080 -N pivot@172.16.10.20
+```
+
+Applications can then route traffic through the SOCKS proxy:
+
+```text
+127.0.0.1:1080
+```
+
+Example:
+
+```bash
+curl --socks5-hostname 127.0.0.1:1080 http://10.10.20.30
+```
+
+---
+
+# Instructor Validation
+
+After starting the lab:
+
+```bash
+./start.sh
+```
+
+Run the automated validation:
 
 ```bash
 ./tests/self-test.sh
 ```
 
-A successful run validates:
+The validation is designed to check:
 
-- all four containers are running
-- expected IP addressing is present
-- the attacker can reach the pivot SSH service
-- the pivot can reach both internal services
-- the attacker cannot directly reach the internal web service
-- Local Port Forwarding works
-- Dynamic SOCKS forwarding works
-- the second internal SSH service is reachable through forwarding
+- All required containers are running
+- Expected IP addressing is present
+- The attacker can reach the pivot SSH service
+- The pivot can access the internal web service
+- The pivot can access the internal SSH service
+- The attacker cannot directly access the isolated internal web service
+- SSH Local Port Forwarding works
+- SSH Dynamic SOCKS forwarding works
+- Internal services can be reached through the tunnel
 
-Expected final result:
+Expected successful result:
 
 ```text
 Self-test result: 12 passed, 0 failed.
 ```
 
-## Management commands
+---
+
+# Management Commands
 
 | Action | Command |
 |---|---|
@@ -158,37 +331,74 @@ Self-test result: 12 passed, 0 failed.
 | Stop lab | `./stop.sh` |
 | Show logs | `docker compose logs -f` |
 
-Equivalent Make targets are also available:
+---
+
+# Make Commands
+
+Equivalent Make targets are available.
+
+Start:
 
 ```bash
 make start
+```
+
+Open attacker shell:
+
+```bash
 make shell
+```
+
+Show status:
+
+```bash
 make status
+```
+
+Run tests:
+
+```bash
 make test
+```
+
+Reset:
+
+```bash
 make reset
+```
+
+Stop:
+
+```bash
 make stop
 ```
 
-## Project structure
+---
+
+# Project Structure
 
 ```text
 green-armor-cyber-range/
+│
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   └── workflows/
+│
 ├── assets/
 │   └── logo.png
+│
 ├── attacker/
 ├── pivot/
 ├── internal-web/
 ├── internal-ssh/
+│
 ├── docs/
 │   ├── STUDENT-GUIDE.md
 │   └── TROUBLESHOOTING.md
-├── instructor-only/
-│   └── INSTRUCTOR-GUIDE.md
+│
 ├── tests/
 │   └── self-test.sh
+│
 ├── compose.yaml
 ├── Makefile
 ├── README.md
@@ -201,10 +411,87 @@ green-armor-cyber-range/
 └── stop.sh
 ```
 
-## Continuous validation
+---
 
-The repository includes a GitHub Actions workflow that builds the lab, starts it, runs the complete self-test, and tears it down after validation. This helps catch configuration problems after repository changes.
+# Continuous Validation
 
-## Safety
+The repository includes a GitHub Actions workflow designed to:
 
-This project is an isolated local cybersecurity training environment. Use the techniques only in this lab or on systems you own or are explicitly authorized to test.
+1. Build the Docker lab
+2. Start the environment
+3. Verify container status
+4. Run the automated self-test
+5. Report validation results
+6. Tear down the environment
+
+This helps detect configuration problems after repository updates.
+
+---
+
+# Reset the Lab
+
+To return the environment to a clean state:
+
+```bash
+./reset.sh
+```
+
+---
+
+# Stop the Lab
+
+```bash
+./stop.sh
+```
+
+---
+
+# Troubleshooting
+
+If the lab does not start correctly:
+
+```bash
+docker compose ps
+```
+
+Check logs:
+
+```bash
+docker compose logs
+```
+
+Or:
+
+```bash
+docker compose logs -f
+```
+
+For additional help see:
+
+[`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md)
+
+---
+
+# Safety
+
+This project is an isolated cybersecurity training environment.
+
+Use the techniques demonstrated in this lab only:
+
+- Inside this training environment
+- On systems you own
+- Or on systems you have explicit authorization to test
+
+Do not apply these techniques against unauthorized systems.
+
+---
+
+<p align="center">
+  <strong>GREEN ARMOR CYBER SECURITY</strong><br>
+  Practical Cybersecurity Training
+</p>
+
+<p align="center">
+  Created & Developed by <strong>Jehad Ghaben</strong><br>
+  Founder & CEO — GREEN ARMOR CYBER SECURITY
+</p>
